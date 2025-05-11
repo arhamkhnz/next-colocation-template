@@ -9,8 +9,8 @@ function Code({ children }: { children: React.ReactNode }) {
 export default function Home() {
   return (
     <div className="bg-background min-h-screen">
-      <div className="bg-accent sticky top-0 flex items-center justify-between px-6 py-4 z-50">
-        <h1 className="text-accent-foreground text-lg font-bold">
+      <div className="bg-accent sticky top-0 z-50 flex items-center justify-between px-6 py-4">
+        <h1 className="text-accent-foreground text-lg font-bold text-balance">
           Welcome to the <span className="underline">Next Colocation Template</span> ✌️
         </h1>
         <Link
@@ -18,14 +18,14 @@ export default function Home() {
           className="bg-foreground text-background hover:bg-muted hover:text-foreground inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium shadow-sm transition-colors duration-300 ease-in-out"
           target="_blank"
         >
-          <Github className="h-4 w-4" />
-          View Repo
+          <Github className="size-4" />
+          <span className="hidden sm:inline">View Repo</span>
         </Link>
       </div>
 
       <div className="space-y-6 px-6 py-4">
         <div className="space-y-4">
-          <h2 className="text-foreground text-3xl leading-tight font-bold">
+          <h2 className="text-foreground text-2xl leading-tight font-bold md:text-3xl">
             Structure your Next.js apps the right way — <span className="underline">modular, clean, and colocated</span>
           </h2>
           <p className="text-foreground">

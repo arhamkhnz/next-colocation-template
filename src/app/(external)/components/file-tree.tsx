@@ -189,7 +189,7 @@ export default function FileTree() {
           return (
             <li key={index} className="py-1">
               <div className="group flex items-start text-left font-mono text-sm">
-                <div className="flex min-w-46 items-center">
+                <div className="flex min-w-auto items-center md:min-w-46">
                   {node.type === "folder" ? (
                     <button
                       onClick={() => toggleFolder(currentPath)}
