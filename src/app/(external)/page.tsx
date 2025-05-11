@@ -9,7 +9,7 @@ function Code({ children }: { children: React.ReactNode }) {
 export default function Home() {
   return (
     <div className="bg-background min-h-screen">
-      <div className="bg-accent sticky top-0 flex items-center justify-between px-6 py-4">
+      <div className="bg-accent sticky top-0 flex items-center justify-between px-6 py-4 z-50">
         <h1 className="text-accent-foreground text-lg font-bold">
           Welcome to the <span className="underline">Next Colocation Template</span> ✌️
         </h1>
