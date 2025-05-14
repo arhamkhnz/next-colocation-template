@@ -32,7 +32,7 @@ export default function FileTree() {
               expanded: true,
               children: [
                 {
-                  name: "components",
+                  name: "_components",
                   type: "folder",
                   description: "Scoped UI components specific to external pages",
                 },
@@ -52,7 +52,7 @@ export default function FileTree() {
                   expanded: true,
                   children: [
                     {
-                      name: "components",
+                      name: "_components",
                       type: "folder",
                       description: "Shared components used across auth routes like GitHub or Microsoft sign-in.",
                     },
@@ -63,7 +63,7 @@ export default function FileTree() {
                       description: "Login route",
                       children: [
                         {
-                          name: "components",
+                          name: "_components",
                           type: "folder",
                           description: "Components specific to the login page (e.g., LoginForm).",
                         },
@@ -77,7 +77,7 @@ export default function FileTree() {
                       description: "Register route",
                       children: [
                         {
-                          name: "components",
+                          name: "_components",
                           type: "folder",
                           description: "Components specific to the register page (e.g., RegisterForm).",
                         },
@@ -99,7 +99,7 @@ export default function FileTree() {
                       description: "Handles unmatched dashboard routes with a not found page.",
                     },
                     {
-                      name: "components",
+                      name: "_components",
                       type: "folder",
                       description:
                         "Scoped UI components for dashboard features like sidebar, navigation, and the root dashboard route.",

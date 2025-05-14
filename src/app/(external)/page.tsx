@@ -26,16 +26,24 @@ export default function Home() {
       <div className="space-y-6 px-6 py-4">
         <div className="space-y-4">
           <h2 className="text-foreground text-2xl leading-tight font-bold md:text-3xl">
-            Structure your Next.js apps the right way — <span className="underline">modular, clean, and colocated</span>
+            Structure your Next.js apps the right way - <span className="underline">modular, clean, and colocated</span>
           </h2>
           <p className="text-foreground">
             This folder structure is based on a practical design pattern for the Next.js App Router. It encourages
             keeping related components, layouts, and logic grouped by context, making the project easier to scale,
             maintain, and onboard across teams. For example, the <Code>auth/login</Code> page includes its own{" "}
-            <Code>components/</Code> folder. Server logic stays in <Code>page.tsx</Code>, while client-facing
+            <Code>_components/</Code> folder. Server logic stays in <Code>page.tsx</Code>, while client-facing
             interactions are isolated in <Code>LoginForm.tsx</Code>, marked with <Code>&quot;use client&quot;</Code>.
-            Shared UI like GitHub sign-in lives in the parent <Code>auth/components</Code> folder and is reused across
+            Shared UI like GitHub sign-in lives in the parent <Code>auth/_components</Code> folder and is reused across
             login and register.
+          </p>
+          <p className="text-foreground">
+            The reason for prefixing component folders with an underscore <Code>_components</Code> is to prevent them
+            from being treated as route segments by the Next.js App Router. While files inside the <Code>app</Code>{" "}
+            directory can safely be colocated by default, private folders like <Code>_components</Code> are helpful for
+            keeping internal implementation details out of the routing system. This pattern helps separate UI logic from
+            routing logic and avoids naming conflicts with future Next.js file conventions. It also helps keep your
+            codebase clean and organized - especially in larger projects.
           </p>
           <p className="text-foreground">
             To keep things organized, the app uses two top-level route groups inside the <Code>app/</Code> directory:{" "}
@@ -51,9 +59,11 @@ export default function Home() {
           </p>
           <p className="text-foreground">
             Reusable components used across multiple parts of the app live in <Code>common/</Code> or <Code>ui/</Code>{" "}
-            folders. This minimizes over-abstraction and keeps the project modular and easy to navigate. For shared
-            logic like API utilities or hooks, we keep <Code>lib</Code> and <Code>hooks</Code> at the root level inside{" "}
-            <Code>src/</Code> for clarity and reusability.
+            folders. This minimizes over-abstraction and keeps the project modular and easy to navigate.
+          </p>
+          <p className="text-foreground">
+            Logic that’s shared but not directly tied to any single route - like API services, reusable hooks, or
+            constants - is kept at the top level to keep route folders focused and easy to navigate.
           </p>
           <p className="text-foreground">
             This pattern also works well with <strong>nested layouts</strong> in the App Router, allowing you to
