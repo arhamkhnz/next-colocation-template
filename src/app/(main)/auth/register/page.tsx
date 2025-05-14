@@ -1,6 +1,6 @@
 import Link from "next/link";
-import GHSignin from "../components/gh-signin";
-import { RegisterForm } from "./components/register-form";
+import GHSignin from "../_components/gh-signin";
+import { RegisterForm } from "./_components/register-form";
 
 export default function RegisterPage() {
   return (

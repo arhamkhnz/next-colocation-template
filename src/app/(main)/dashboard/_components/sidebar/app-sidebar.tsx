@@ -3,9 +3,9 @@
 import * as React from "react";
 import { IconHelp, IconInnerShadowTop, IconSearch, IconSettings } from "@tabler/icons-react";
 
-import { NavMain } from "@/app/(main)/dashboard/components/sidebar/nav-main";
-import { NavSecondary } from "@/app/(main)/dashboard/components/sidebar/nav-secondary";
-import { NavUser } from "@/app/(main)/dashboard/components/sidebar/nav-user";
+import { NavMain } from "@/app/(main)/dashboard/_components/sidebar/nav-main";
+import { NavSecondary } from "@/app/(main)/dashboard/_components/sidebar/nav-secondary";
+import { NavUser } from "@/app/(main)/dashboard/_components/sidebar/nav-user";
 import {
   Sidebar,
   SidebarContent,

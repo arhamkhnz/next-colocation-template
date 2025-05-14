@@ -1,5 +1,5 @@
 import Link from "next/link";
-import FileTree from "./components/file-tree";
+import FileTree from "./_components/file-tree";
 import { Github } from "lucide-react";
 
 function Code({ children }: { children: React.ReactNode }) {
