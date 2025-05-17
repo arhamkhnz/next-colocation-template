@@ -82,8 +82,8 @@ export default function Home() {
                 >
                   Clone the repo
                 </Link>{" "}
-                and use it as a starting point. It comes with a starter dashboard page and is built using{" "}
-                <Code>TypeScript</Code> and{" "}
+                and use it as a starting point. It comes with a starter dashboard page, as well as auth pages including{" "}
+                login and register, and is built using <Code>TypeScript</Code> and{" "}
                 <Link href="https://ui.shadcn.com" className="underline" target="_blank">
                   Shadcn UI
                 </Link>

@@ -20,7 +20,7 @@ Using colocated folders also improves developer experience in code editors, as y
 
 You can view the file tree below to get a better understanding of how this setup is structured in practice.
 
-Want to try this structure in your own project? [Clone the repo](https://github.com/arhamkhnz/next-colocation-template) and use it as a starting point. It comes with a starter dashboard page and is built using `TypeScript` and [Shadcn UI](https://ui.shadcn.com), so you can start prototyping with real components right away.
+Want to try this structure in your own project? [Clone the repo](https://github.com/arhamkhnz/next-colocation-template) and use it as a starting point. It comes with a starter dashboard page, as well as auth pages including login and register, and is built using `TypeScript` and [Shadcn UI](https://ui.shadcn.com), so you can start prototyping with real components right away.
 
 ### Using Private Folders (`_components/`)
 
