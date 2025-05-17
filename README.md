@@ -12,7 +12,7 @@ The `app/` directory enables file-based routing, layouts, and nested segments in
 
 This folder structure follows a colocation-first approach consistent with the [Next.js App Router](https://nextjs.org/docs/app/building-your-application/routing). Related components, layouts, and logic are placed together inside their route segments to improve maintainability and clarity as your app grows.
 
-For example, the `auth/login` route includes its own `_components/` folder containing UI elements like `LoginForm.tsx`, which are specific to the login page. Since `LoginForm.tsx` handles interactive behavior such as state and events, it's marked with `"use client"`, as recommended by Next.js for client-side logic at the leaf level. If a file doesn’t explicitly use `"use client"`, it runs as a Server Component by default.
+For example, the `auth/login` route includes its own `_components/` folder containing UI elements like `login-form.tsx`, which are specific to the login page. Since `login-form.tsx` handles interactive behavior such as state and events, it's marked with `"use client"`, as recommended by Next.js for client-side logic at the leaf level. If a file doesn’t explicitly use `"use client"`, it runs as a Server Component by default.
 
 Shared components that are reused across multiple routes within the `auth/` segment, such as GitHub sign-in buttons are placed in the parent route's `_components/` folder (e.g., `auth/_components/`). This keeps reusable logic colocated at the appropriate scope, without polluting global folders.
 
@@ -74,7 +74,7 @@ src/
 │   │   │   ├── page.tsx         # Route entry point for register
 │   │   │   └── _components/     # UI components for register
 │   │   ├── _components/         # Shared auth components
-│   │   └── layout.tsx           # Layout used by auth pages (e.g. GitHub sign-in)
+│   │   └── layout.tsx           # Layout used by auth pages
 │   ├── dashboard/               # Dashboard Routes & Layout
 │   │   ├── page.tsx             # Route entry point for dashboard
 │   │   ├── layout.tsx           # Dashboard layout

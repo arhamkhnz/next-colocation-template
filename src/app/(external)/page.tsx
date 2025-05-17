@@ -52,8 +52,8 @@ export default function Home() {
               </p>
               <p className="text-sm text-slate-600 sm:text-base">
                 For example, the <Code>auth/login</Code> route includes its own <Code>_components/</Code> folder
-                containing UI elements like <Code>LoginForm.tsx</Code>, which are specific to the login page. Since{" "}
-                <Code>LoginForm.tsx</Code> handles interactive behavior such as state and events, it&apos;s marked with{" "}
+                containing UI elements like <Code>login-form.tsx</Code>, which are specific to the login page. Since{" "}
+                <Code>login-form.tsx</Code> handles interactive behavior such as state and events, it&apos;s marked with{" "}
                 <Code>&quot;use client&quot;</Code>, as recommended by Next.js for client-side logic at the leaf level.
                 If a file doesn’t explicitly use <Code>&quot;use client&quot;</Code>, it runs as a Server Component by
                 default.
@@ -203,7 +203,7 @@ src/
 │   │   │   ├── page.tsx         # Route entry point for register
 │   │   │   └── _components/     # UI components for register
 │   │   ├── _components/         # Shared auth components
-│   │   └── layout.tsx           # Layout used by auth pages (e.g. GitHub sign-in)
+│   │   └── layout.tsx           # Layout used by auth pages
 │   ├── dashboard/               # Dashboard Routes & Layout
 │   │   ├── page.tsx             # Route entry point for dashboard
 │   │   ├── layout.tsx           # Dashboard layout
