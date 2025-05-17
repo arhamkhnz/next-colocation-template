@@ -1,67 +1,83 @@
-# Next.js Colocation Architecture Template
+# Next Colocation Template
 
-Structure your Next.js apps the right way — modular, clean, and colocated.
+Structure your Next.js apps with a colocation-first approach for cleaner, modular, and maintainable code.
 
-This folder structure is based on a practical design pattern for the Next.js App Router. It encourages keeping related components, layouts, and logic grouped by context, making the project easier to scale, maintain, and onboard across teams.
+Colocation means placing components, pages, and related logic together within their route folders. This approach aligns with the Next.js App Router's design, making features self-contained and easier to manage without navigating multiple directories.
 
-For example, the `auth/login` page includes its own `components/` folder. Server logic stays in `page.tsx`, while client-facing interactions are isolated in `LoginForm.tsx`, marked with `"use client"`. Shared UI like GitHub sign-in lives in the parent `auth/components` folder and is reused across `login` and `register`.
+## Colocation Principles
 
-To keep things organized, the app uses two top-level route groups inside the `app/` directory:
+### File Structure and Colocation Strategy
 
-- `(main)` for core application logic
-- `(external)` for public-facing pages
+This folder structure follows a colocation-first approach consistent with the [Next.js App Router](https://nextjs.org/docs/app/building-your-application/routing). Related components, layouts, and logic are placed together inside their route segments to improve maintainability and clarity as your app grows.
 
-These are isolated using Next.js’s App Router group segment feature, which allows structuring routes without affecting the URL path.
+For instance, the `auth/login` route includes a `_components/` folder containing UI elements like `LoginForm.tsx`. Files that contain client-side interactivity, such as state, event handlers, or browser APIs, should be explicitly marked with `"use client"`, following Next.js guidelines. Server-related logic like loaders or form actions can remain in `page.tsx`. This is flexible depending on your use case. Shared UI components like GitHub sign-in buttons are placed in `auth/_components/` and can be reused across routes like login, register, or any other part of the auth segment.
 
-This avoids the clutter of global component folders by colocating logic where it’s needed. Server logic remains server-only by default, and interactive UI is clearly marked with `"use client"` at the leaf level, as recommended by Next.js. This separation also improves rendering performance and code readability.
+### Using Private Folders (`_components/`)
 
-Reusable components used across multiple parts of the app live in `common/` or `ui/` folders. This minimizes over-abstraction and keeps the project modular and easy to navigate.
+Prefixing folders with an underscore, like `_components`, opts them out of the routing system. This follows the [Next.js private folders convention](https://nextjs.org/docs/app/getting-started/project-structure#private-folders), helping keep routing logic separate from UI components.
 
-For shared logic like API utilities or custom hooks, `lib/` and `hooks/` are kept at the root level inside `src/` for clarity and reusability.
+Although colocation is safe by default within the `app/` directory, using private folders improves organization, editor navigation, and prevents conflicts with future Next.js features.
 
-This pattern also works well with nested layouts in the App Router, allowing you to colocate shared shells like sidebars or tab bars per route section without making the structure feel rigid or overwhelming.
+> Tip: This pattern promotes clarity and consistency, especially in larger projects where structure matters.    
+> ℹ️ The `src/` directory is optional in Next.js but is commonly used to keep the project root organized.
 
-Try adapting this structure to your workflow and team setup. It's not a rulebook. It's a starting point that has worked well in real projects. This pattern has been used in large-scale applications with 50+ routes and has consistently proven more manageable than approaches like Atomic Design, where the `components/` folder can become bloated and overly abstract.
+### Top-Level Routing Groups
 
-This colocation-first structure helps keep related code together and avoids the complexity of deeply nested reusable components and excessive prop drilling.
+Route groups are optional folders that help organize routes without affecting the URL path. For example, this structure uses groups like `(main)` and `(external)` to separate core app logic from public-facing pages.
 
-See the file tree below for a visual understanding of how this architecture is structured.
+- `(main)`: Core application logic
+- `(external)`: Public-facing routes such as marketing pages or standalone forms
 
-This example uses the `src/` directory structure. If you don't use `src`, all related folders like `app/`, `lib/`, `hooks/`, and `middleware.ts` will appear directly at the project root.
+These groups help keep your project organized while preserving clean URL structures.
+
+### Rationale
+
+Colocating route-specific logic avoids cluttering a global `components/` folder and reduces cognitive overhead. Shared utilities like `hooks/`, `lib/`, or `constants/` remain at the top level inside `src/`, keeping them decoupled from specific routes.
+
+This structure integrates well with nested layouts, enabling shared UI elements like sidebars or headers within each route group.
+
+It also streamlines onboarding and enforces consistent conventions across teams.
+
+### When to Use This Pattern
+
+This structure is especially useful for medium to large-scale applications with dozens of routes, teams working in parallel, or projects where clear boundaries between server and client components are important. It supports better modularity, faster onboarding, and improved discoverability of related logic.
+
+Traditional patterns like Atomic Design or feature folders can become difficult to scale, leading to bloated `components/` trees and tight coupling. This approach keeps logic close to where it’s used while supporting global reuse where appropriate.
+
+---
+
+## See the file tree below for a visual overview of this pattern.
+
+📁 This example uses the `src/` directory. If you don’t use `src/`, folders like `app/`, `lib/`, `hooks/`, and `middleware.ts` (or `middleware.js`) will exist directly at the project root.
+
 
 ```code
-src/  
-├── app/  
-│   ├── (external)/  — Publicly accessible pages (e.g., feedback forms, landing pages)  
-│   │   ├── components/  — Scoped UI components specific to external pages  
-│   │   └── page.tsx  — Public landing page  
-│  
-│   ├── (main)/  — Main application logic  
-│   │   ├── auth/  — Auth routes including login, register, layout, and shared components.  
-│   │   │   ├── components/  — Shared components used across auth routes like GitHub or Microsoft sign-in.  
-│   │   │   ├── login/  — Login route  
-│   │   │   │   ├── components/  — Components specific to the login page (e.g., LoginForm).  
-│   │   │   │   └── page.tsx  — Login page  
-│   │   │   ├── register/  — Register route  
-│   │   │   │   ├── components/  — Components specific to the register page (e.g., RegisterForm).  
-│   │   │   │   └── page.tsx  — Register page  
-│   │   │   └── layout.tsx  — Layout specific to auth pages  
-│   │   ├── dashboard/  — Dashboard route with layout, UI components, and supporting pages  
-│   │   │   ├── [...not-found]/  — Handles unmatched dashboard routes with a not found page.  
-│   │   │   ├── components/  — Scoped UI components for dashboard features like sidebar, navigation, and the root dashboard route.  
-│   │   │   ├── layout.tsx  — Layout specific to dashboard pages  
-│   │   │   └── page.tsx  — Dashboard page  
-│  
-├── components/  — Top-level components directory containing UI, common elements, and shared building blocks used throughout the app.  
-│   ├── ui/  — UI primitives like buttons, inputs, selects, and other base elements used throughout the app.  
-│   └── common/  — Shared components used across multiple features or routes where colocation isn’t practical.  
-│  
-├── config/  — Application-wide configuration files and settings (e.g., project config, theme, etc.)  
-├── hooks/  — Custom React hooks used across the application  
-├── lib/  — Helper functions, utilities, or modules used across the application.  
-├── navigation/  — Configuration or components related to navigation (e.g., sidebar structure or nav items).  
-├── constants/  — App-wide constant values such as enums, static options, or config objects.  
+app/
+├── auth/                      # Auth Routes & Layout
+│   ├── login/                 # Login Page
+│   │   ├── page.tsx           # Route entry point for login
+│   │   └── _components/       # UI components for login
+│   ├── register/              # Register Page
+│   │   ├── page.tsx           # Route entry point for register
+│   │   └── _components/       # UI components for register
+│   ├── _components/           # Shared auth components
+│   └── layout.tsx             # Layout used by auth pages (e.g. GitHub sign-in)
+├── dashboard/                 # Dashboard
+│   ├── page.tsx               # Route entry point for dashboard
+│   ├── layout.tsx             # Dashboard layout
+│   └── _components/           # Dashboard UI components
 ```
+This is a basic structure for organizing files using colocation.  
+To explore the full project structure, see the [GitHub repository](https://github.com/arhamkhnz/next-colocation-template).  
+You can also check out my [Next Shadcn Admin Dashboard](https://github.com/arhamkhnz/next-shadcn-admin-dashboard), where this pattern is applied in a larger, real-world setup.
 
-Feel free to open discussions or contribute to this project if you find it helpful or have suggestions.  
-This colocation-first pattern can also be adapted to other frontend frameworks.
+> **Note**: This project is actively being updated, so you may notice occasional inconsistencies or ongoing changes in the folder structure.
+
+---
+
+While this colocation-first pattern is built for Next.js but can be adapted to other modern frameworks that support modular or file-based routing. This includes frameworks like Remix, Vite with React Router, or Nuxt in the Vue ecosystem.
+
+---
+
+Feel free to contribute, open issues, or suggest improvements.  
+If you find this project helpful, consider giving it a ⭐ on GitHub — it helps others discover it too!
