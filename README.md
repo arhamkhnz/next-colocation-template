@@ -4,13 +4,23 @@ Structure your Next.js apps with a colocation-first approach for cleaner, modula
 
 Colocation means placing components, pages, and related logic together within their route folders. This approach aligns with the Next.js App Router's design, making features self-contained and easier to manage without navigating multiple directories.
 
+The `app/` directory enables file-based routing, layouts, and nested segments in Next.js. This template uses its structure to colocate files by feature.
+
 ## Colocation Principles
 
 ### File Structure and Colocation Strategy
 
 This folder structure follows a colocation-first approach consistent with the [Next.js App Router](https://nextjs.org/docs/app/building-your-application/routing). Related components, layouts, and logic are placed together inside their route segments to improve maintainability and clarity as your app grows.
 
-For instance, the `auth/login` route includes a `_components/` folder containing UI elements like `LoginForm.tsx`. Files that contain client-side interactivity, such as state, event handlers, or browser APIs, should be explicitly marked with `"use client"`, following Next.js guidelines. Server-related logic like loaders or form actions can remain in `page.tsx`. This is flexible depending on your use case. Shared UI components like GitHub sign-in buttons are placed in `auth/_components/` and can be reused across routes like login, register, or any other part of the auth segment.
+For example, the `auth/login` route includes its own `_components/` folder containing UI elements like `LoginForm.tsx`, which are specific to the login page. Since `LoginForm.tsx` handles interactive behavior such as state and events, it's marked with `"use client"`, as recommended by Next.js for client-side logic at the leaf level. If a file doesn’t explicitly use `"use client"`, it runs as a Server Component by default.
+
+Shared components that are reused across multiple routes within the `auth/` segment, such as GitHub sign-in buttons are placed in the parent route's `_components/` folder (e.g., `auth/_components/`). This keeps reusable logic colocated at the appropriate scope, without polluting global folders.
+
+Using colocated folders also improves developer experience in code editors, as you can work within a single folder for an entire route, reducing context switching and improving flow while building features.
+
+You can view the file tree below to get a better understanding of how this setup is structured in practice.
+
+Want to try this structure in your own project? [Clone the repo](https://github.com/arhamkhnz/next-colocation-template) and use it as a starting point. It comes with a starter dashboard page and is built using `TypeScript` and [Shadcn UI](https://ui.shadcn.com), so you can start prototyping with real components right away.
 
 ### Using Private Folders (`_components/`)
 
@@ -18,8 +28,8 @@ Prefixing folders with an underscore, like `_components`, opts them out of the r
 
 Although colocation is safe by default within the `app/` directory, using private folders improves organization, editor navigation, and prevents conflicts with future Next.js features.
 
-> Tip: This pattern promotes clarity and consistency, especially in larger projects where structure matters.    
-> ℹ️ The `src/` directory is optional in Next.js but is commonly used to keep the project root organized.
+> Tip: This pattern promotes clarity and consistency, especially in larger projects where structure matters.  
+> 💡 While optional, using the `src/` directory is a common convention that keeps your project root clean and separates application logic from configuration files.
 
 ### Top-Level Routing Groups
 
@@ -35,6 +45,8 @@ These groups help keep your project organized while preserving clean URL structu
 Colocating route-specific logic avoids cluttering a global `components/` folder and reduces cognitive overhead. Shared utilities like `hooks/`, `lib/`, or `constants/` remain at the top level inside `src/`, keeping them decoupled from specific routes.
 
 This structure integrates well with nested layouts, enabling shared UI elements like sidebars or headers within each route group.
+
+If needed, route-specific logic like schema validation (e.g., using Zod) or input types can also live alongside the route in a colocated `schema.ts` file. When such logic is reused across multiple routes, it’s better placed in a shared top-level folder like `lib/` to maintain separation and avoid duplication.
 
 It also streamlines onboarding and enforces consistent conventions across teams.
 
@@ -87,4 +99,4 @@ While this colocation-first pattern is built for Next.js but can be adapted to o
 ---
 
 Feel free to contribute, open issues, or suggest improvements.  
-If you find this project helpful, consider giving it a ⭐ on GitHub — it helps others discover it too!
+If you find this project helpful, consider giving it a ⭐ on GitHub - it helps others discover it too.
