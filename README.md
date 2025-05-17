@@ -51,7 +51,7 @@ Traditional patterns like Atomic Design or feature folders can become difficult 
 📁 This example uses the `src/` directory. If you don’t use `src/`, folders like `app/`, `lib/`, `hooks/`, and `middleware.ts` (or `middleware.js`) will exist directly at the project root.
 
 
-```code
+```txt
 app/
 ├── auth/                      # Auth Routes & Layout
 │   ├── login/                 # Login Page
