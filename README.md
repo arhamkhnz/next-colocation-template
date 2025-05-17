@@ -52,20 +52,27 @@ Traditional patterns like Atomic Design or feature folders can become difficult 
 
 
 ```txt
-app/
-├── auth/                      # Auth Routes & Layout
-│   ├── login/                 # Login Page
-│   │   ├── page.tsx           # Route entry point for login
-│   │   └── _components/       # UI components for login
-│   ├── register/              # Register Page
-│   │   ├── page.tsx           # Route entry point for register
-│   │   └── _components/       # UI components for register
-│   ├── _components/           # Shared auth components
-│   └── layout.tsx             # Layout used by auth pages (e.g. GitHub sign-in)
-├── dashboard/                 # Dashboard
-│   ├── page.tsx               # Route entry point for dashboard
-│   ├── layout.tsx             # Dashboard layout
-│   └── _components/           # Dashboard UI components
+src/
+└── app/
+│   ├── auth/                    # Auth Routes & Layout
+│   │   ├── login/               # Login Page
+│   │   │   ├── page.tsx         # Route entry point for login
+│   │   │   └── _components/     # UI components for login
+│   │   ├── register/            # Register Page
+│   │   │   ├── page.tsx         # Route entry point for register
+│   │   │   └── _components/     # UI components for register
+│   │   ├── _components/         # Shared auth components
+│   │   └── layout.tsx           # Layout used by auth pages (e.g. GitHub sign-in)
+│   ├── dashboard/               # Dashboard Routes & Layout
+│   │   ├── page.tsx             # Route entry point for dashboard
+│   │   ├── layout.tsx           # Dashboard layout
+│   │   └── _components/         # Dashboard UI components
+├── components/                  # Top-level components like UI primitives and layout elements
+├── config/                      # Project configuration files and settings
+├── hooks/                       # Reusable custom React hooks
+├── lib/                         # Shared libraries and utility functions
+├── navigation/                  # Navigation-related config (e.g., sidebar items)
+└── middleware.ts                # Middleware for auth, redirects, etc.
 ```
 This is a basic structure for organizing files using colocation.  
 To explore the full project structure, see the [GitHub repository](https://github.com/arhamkhnz/next-colocation-template).  

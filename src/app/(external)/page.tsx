@@ -31,6 +31,10 @@ export default function Home() {
             approach aligns with the Next.js App Router&apos;s design, making features self-contained and easier to
             manage without navigating multiple directories.
           </p>
+          <p className="text-sm text-slate-600 sm:text-base">
+            The <Code>app/</Code> directory enables file-based routing, layouts, and nested segments in Next.js. This
+            template uses its structure to colocate files by feature.
+          </p>
         </div>
 
         <div className="space-y-8 sm:space-y-10">
@@ -47,13 +51,43 @@ export default function Home() {
                 maintainability and clarity as your app grows.
               </p>
               <p className="text-sm text-slate-600 sm:text-base">
-                For instance, the <Code>auth/login</Code> route includes a <Code>_components/</Code> folder containing
-                UI elements like <Code>LoginForm.tsx</Code>. Files that contain client-side interactivity, such as
-                state, event handlers, or browser APIs, should be explicitly marked with{" "}
-                <Code>&quot;use client&quot;</Code>, following Next.js guidelines. Server-related logic like loaders or
-                form actions can remain in <Code>page.tsx</Code>. This is flexible depending on your use case. Shared UI
-                components like GitHub sign-in buttons are placed in <Code>auth/_components/</Code> and can be reused
-                across routes like login, register, or any other part of the auth segment.
+                For example, the <Code>auth/login</Code> route includes its own <Code>_components/</Code> folder
+                containing UI elements like <Code>LoginForm.tsx</Code>, which are specific to the login page. Since{" "}
+                <Code>LoginForm.tsx</Code> handles interactive behavior such as state and events, it&apos;s marked with{" "}
+                <Code>&quot;use client&quot;</Code>, as recommended by Next.js for client-side logic at the leaf level.
+                If a file doesn’t explicitly use <Code>&quot;use client&quot;</Code>, it runs as a Server Component by
+                default.
+              </p>
+              <p className="text-sm text-slate-600 sm:text-base">
+                Shared components that are reused across multiple routes within the <Code>auth/</Code> segment, such as
+                GitHub sign-in buttons are placed in the parent route&apos;s <Code>_components/</Code> folder (e.g.,{" "}
+                <Code>auth/_components/</Code>). This keeps reusable logic colocated at the appropriate scope, without
+                polluting global folders.
+              </p>
+              <p className="text-sm text-slate-600 sm:text-base">
+                Using colocated folders also improves developer experience in code editors, as you can work within a
+                single folder for an entire route, reducing context switching and improving flow while building
+                features.
+              </p>
+              <p className="text-sm text-slate-600 sm:text-base">
+                You can view the file tree below to get a better understanding of how this setup is structured in
+                practice.
+              </p>
+              <p className="text-sm text-slate-600 sm:text-base">
+                Want to try this structure in your own project?{" "}
+                <Link
+                  href="https://github.com/arhamkhnz/next-colocation-template"
+                  className="font-medium underline"
+                  target="_blank"
+                >
+                  Clone the repo
+                </Link>{" "}
+                and use it as a starting point. It comes with a starter dashboard page and is built using{" "}
+                <Code>TypeScript</Code> and{" "}
+                <Link href="https://ui.shadcn.com" className="underline" target="_blank">
+                  Shadcn UI
+                </Link>
+                , so you can start prototyping with real components right away.
               </p>
             </div>
 
@@ -80,11 +114,9 @@ export default function Home() {
                 Tip: This pattern promotes clarity and consistency, especially in larger projects where structure
                 matters.
               </p>
-              <p className="text-slate-600">
-                <em>
-                  ℹ️ The <Code>src/</Code> directory is optional in Next.js but is commonly used to keep the project
-                  root organized.
-                </em>
+              <p className="text-slate-600 italic">
+                💡 While optional, using the <Code>src/</Code> directory is a common convention that keeps your project
+                root clean and separates application logic from configuration files.
               </p>
             </div>
 
@@ -121,6 +153,12 @@ export default function Home() {
                 within each route group.
               </p>
               <p className="text-sm text-slate-600 sm:text-base">
+                If needed, route-specific logic like schema validation (e.g., using Zod) or input types can also live
+                alongside the route in a colocated <Code>schema.ts</Code> file. When such logic is reused across
+                multiple routes, it’s better placed in a shared top-level folder like <Code>lib/</Code> to maintain
+                separation and avoid duplication.
+              </p>
+              <p className="text-sm text-slate-600 sm:text-base">
                 It also streamlines onboarding and enforces consistent conventions across teams.
               </p>
             </div>
@@ -142,7 +180,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* File Structure Example */}
         <div className="space-y-4 sm:space-y-6">
           <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
             See the file tree below for a visual overview of this pattern.
@@ -156,20 +193,27 @@ export default function Home() {
             <div className="overflow-x-auto">
               <pre className="p-3 leading-relaxed sm:p-6">
                 {`
-app/
-├── auth/                      # Auth Routes & Layout
-│   ├── login/                 # Login Page
-│   │   ├── page.tsx           # Route entry point for login
-│   │   └── _components/       # UI components for login
-│   ├── register/              # Register Page
-│   │   ├── page.tsx           # Route entry point for register
-│   │   └── _components/       # UI components for register
-│   ├── _components/           # Shared auth components
-│   └── layout.tsx             # Layout used by auth pages (e.g. GitHub sign-in)
-├── dashboard/                 # Dashboard
-│   ├── page.tsx               # Route entry point for dashboard
-│   ├── layout.tsx             # Dashboard layout
-│   └── _components/           # Dashboard UI components`}
+src/
+└── app/
+│   ├── auth/                    # Auth Routes & Layout
+│   │   ├── login/               # Login Page
+│   │   │   ├── page.tsx         # Route entry point for login
+│   │   │   └── _components/     # UI components for login
+│   │   ├── register/            # Register Page
+│   │   │   ├── page.tsx         # Route entry point for register
+│   │   │   └── _components/     # UI components for register
+│   │   ├── _components/         # Shared auth components
+│   │   └── layout.tsx           # Layout used by auth pages (e.g. GitHub sign-in)
+│   ├── dashboard/               # Dashboard Routes & Layout
+│   │   ├── page.tsx             # Route entry point for dashboard
+│   │   ├── layout.tsx           # Dashboard layout
+│   │   └── _components/         # Dashboard UI components
+├── components/                  # Top-level components like UI primitives and layout elements
+├── config/                      # Project configuration files and settings
+├── hooks/                       # Reusable custom React hooks
+├── lib/                         # Shared libraries and utility functions
+├── navigation/                  # Navigation-related config (e.g., sidebar items)
+└── middleware.ts                # Middleware for auth, redirects, etc.`}
               </pre>
             </div>
           </div>
@@ -183,7 +227,7 @@ app/
             <Link href="https://github.com/arhamkhnz/next-shadcn-admin-dashboard" className="underline">
               Next Shadcn Admin Dashboard
             </Link>{" "}
-            project, where this pattern is implemented in a larger, real world setup.
+            project, where this pattern is implemented in a larger, real-world setup.
           </p>
           <p className="text-sm text-slate-500 italic sm:text-base">
             *This project is actively being updated, so you may notice occasional inconsistencies or ongoing changes in
@@ -204,7 +248,10 @@ app/
             Built by{" "}
             <Link href="https://github.com/arhamkhnz" className="font-medium text-slate-700 hover:underline">
               Arham Khan
-            </Link>
+            </Link>{" "}
+            - feel free to contribute, open issues, or suggest improvements.
+            <br />
+            If this project helps you, a ⭐ on GitHub would be appreciated!
           </p>
         </div>
       </section>
