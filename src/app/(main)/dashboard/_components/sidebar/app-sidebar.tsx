@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { IconHelp, IconInnerShadowTop, IconSearch, IconSettings } from "@tabler/icons-react";
+import { Settings, MessageCircleQuestion, Search, Command } from "lucide-react";
 
 import { NavMain } from "@/app/(main)/dashboard/_components/sidebar/nav-main";
 import { NavSecondary } from "@/app/(main)/dashboard/_components/sidebar/nav-secondary";
@@ -27,17 +27,17 @@ const data = {
     {
       title: "Settings",
       url: "#",
-      icon: IconSettings,
+      icon: Settings,
     },
     {
       title: "Get Help",
       url: "#",
-      icon: IconHelp,
+      icon: MessageCircleQuestion,
     },
     {
       title: "Search",
       url: "#",
-      icon: IconSearch,
+      icon: Search,
     },
   ],
 };
@@ -50,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
+                <Command className="!size-5" />
                 <span className="text-base font-semibold">Acme Inc.</span>
               </a>
             </SidebarMenuButton>
