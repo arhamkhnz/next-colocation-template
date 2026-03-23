@@ -1,8 +1,7 @@
 import { ChartAreaInteractive } from "@/app/(main)/dashboard/_components/sidebar/chart-area-interactive";
-import { DataTable } from "@/app/(main)/dashboard/_components/sidebar/data-table";
+import data from "@/app/(main)/dashboard/_components/proposal-sections-table/data";
+import { ProposalSectionsTable } from "@/app/(main)/dashboard/_components/proposal-sections-table/table";
 import { SectionCards } from "@/app/(main)/dashboard/_components/sidebar/section-cards";
-
-import data from "./data.json";
 
 export default function Page() {
   return (
@@ -13,7 +12,7 @@ export default function Page() {
           <div className="px-4 lg:px-6">
             <ChartAreaInteractive />
           </div>
-          <DataTable data={data} />
+          <ProposalSectionsTable data={data} />
         </div>
       </div>
     </div>
