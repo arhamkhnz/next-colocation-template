@@ -19,9 +19,9 @@ import { sidebarItems } from "@/navigation/sidebar/sidebar-items";
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "arhamkhnz",
+    email: "a@example.com",
+    avatar: "https://avatars.githubusercontent.com/u/43849669",
   },
   navSecondary: [
     {
