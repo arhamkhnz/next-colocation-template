@@ -125,7 +125,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
           View
         </Label>
         <Select value={activeView} onValueChange={(value) => setActiveView(value as ViewOption)}>
-          <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
+          <SelectTrigger className="flex @4xl/main:hidden w-fit" size="sm" id="view-selector">
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>
           <SelectContent>
@@ -138,7 +138,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
             </SelectGroup>
           </SelectContent>
         </Select>
-        <TabsList className="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
+        <TabsList className="@4xl/main:flex hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1">
           <TabsTrigger value="outline">Outline</TabsTrigger>
           <TabsTrigger value="past-performance">
             Past Performance <Badge variant="secondary">3</Badge>
@@ -194,7 +194,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
             id={sortableId}
           >
             <Table>
-              <TableHeader className="bg-muted sticky top-0 z-10">
+              <TableHeader className="sticky top-0 z-10 bg-muted">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
@@ -224,13 +224,13 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
           </DndContext>
         </div>
         <div className="flex items-center justify-between px-4">
-          <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
+          <div className="hidden flex-1 text-muted-foreground text-sm lg:flex">
             {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
             selected.
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
-              <Label htmlFor="proposal-sections-rows-per-page" className="text-sm font-medium">
+              <Label htmlFor="proposal-sections-rows-per-page" className="font-medium text-sm">
                 Rows per page
               </Label>
               <Select
@@ -253,7 +253,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex w-fit items-center justify-center text-sm font-medium">
+            <div className="flex w-fit items-center justify-center font-medium text-sm">
               Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">

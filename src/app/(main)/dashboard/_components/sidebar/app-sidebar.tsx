@@ -1,7 +1,10 @@
 "use client";
 
-import * as React from "react";
-import { Settings, MessageCircleQuestion, Search, Command } from "lucide-react";
+import type * as React from "react";
+
+import Link from "next/link";
+
+import { Command, MessageCircleQuestion, Search, Settings } from "lucide-react";
 
 import { NavMain } from "@/app/(main)/dashboard/_components/sidebar/nav-main";
 import { NavSecondary } from "@/app/(main)/dashboard/_components/sidebar/nav-secondary";
@@ -48,11 +51,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <a href="#">
-                <Command className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
+              <Link prefetch={false} href="/dashboard/default">
+                <Command className="size-5!" />
+                <span className="font-semibold text-base">Acme Inc.</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

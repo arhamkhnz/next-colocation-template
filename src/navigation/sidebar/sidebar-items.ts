@@ -1,4 +1,4 @@
-import { LayoutDashboard, List, ChartNoAxesColumnIncreasing, Folder, Users, type LucideIcon } from "lucide-react";
+import { ChartNoAxesColumnIncreasing, Folder, LayoutDashboard, List, type LucideIcon, Users } from "lucide-react";
 
 export interface NavSubItem {
   title: string;

@@ -69,7 +69,7 @@ function DragHandle({ id }: { id: number }) {
       {...listeners}
       variant="ghost"
       size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
+      className="size-7 text-muted-foreground hover:bg-transparent"
     >
       <GripVertical />
       <span className="sr-only">Drag to reorder</span>
@@ -83,7 +83,7 @@ function ProposalSectionDetailViewer({ item }: { item: ProposalSectionsRow }) {
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
-        <Button variant="link" className="text-foreground w-fit px-0 text-left">
+        <Button variant="link" className="w-fit px-0 text-left text-foreground">
           {item.header}
         </Button>
       </DrawerTrigger>
@@ -134,7 +134,7 @@ function ProposalSectionDetailViewer({ item }: { item: ProposalSectionsRow }) {
               </ChartContainer>
               <Separator />
               <div className="grid gap-2">
-                <div className="flex gap-2 leading-none font-medium">
+                <div className="flex gap-2 font-medium leading-none">
                   Trending up by 5.2% this month <TrendingUp />
                 </div>
                 <div className="text-muted-foreground">
@@ -278,7 +278,7 @@ export const proposalSectionsColumns: ColumnDef<ProposalSectionsRow>[] = [
     header: "Section Type",
     cell: ({ row }) => (
       <div className="w-32">
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
+        <Badge variant="outline" className="px-1.5 text-muted-foreground">
           {row.original.type}
         </Badge>
       </div>
@@ -288,9 +288,9 @@ export const proposalSectionsColumns: ColumnDef<ProposalSectionsRow>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
+      <Badge variant="outline" className="px-1.5 text-muted-foreground">
         {row.original.status === "Done" ? (
-          <CircleCheck className="stroke-background fill-green-500 dark:fill-green-400" />
+          <CircleCheck className="fill-green-500 stroke-background dark:fill-green-400" />
         ) : (
           <Loader />
         )}
@@ -309,7 +309,7 @@ export const proposalSectionsColumns: ColumnDef<ProposalSectionsRow>[] = [
         <Input
           id={`${row.original.id}-target`}
           defaultValue={row.original.target}
-          className="hover:bg-input/30 focus-visible:bg-background dark:focus-visible:bg-input/30 dark:hover:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:focus-visible:bg-input/30 dark:hover:bg-input/30"
         />
       </form>
     ),
@@ -325,7 +325,7 @@ export const proposalSectionsColumns: ColumnDef<ProposalSectionsRow>[] = [
         <Input
           id={`${row.original.id}-limit`}
           defaultValue={row.original.limit}
-          className="hover:bg-input/30 focus-visible:bg-background dark:focus-visible:bg-input/30 dark:hover:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
+          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:focus-visible:bg-input/30 dark:hover:bg-input/30"
         />
       </form>
     ),
@@ -369,7 +369,7 @@ export const proposalSectionsColumns: ColumnDef<ProposalSectionsRow>[] = [
     cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="text-muted-foreground data-[state=open]:bg-muted flex size-8" size="icon">
+          <Button variant="ghost" className="flex size-8 text-muted-foreground data-[state=open]:bg-muted" size="icon">
             <EllipsisVertical />
             <span className="sr-only">Open menu</span>
           </Button>

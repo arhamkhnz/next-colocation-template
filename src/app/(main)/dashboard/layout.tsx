@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { cookies } from "next/headers";
 
-import { AppSidebar } from "./_components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
+import { AppSidebar } from "./_components/sidebar/app-sidebar";
 import { SiteHeader } from "./_components/sidebar/site-header";
 
 interface LayoutProps {

@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { PROJECT_CONFIG } from "@/config/project-config";
+
+import type { Metadata } from "next";
+
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { PROJECT_CONFIG } from "@/config/project-config";
 import "./globals.css";
 
 const geistSans = Geist({

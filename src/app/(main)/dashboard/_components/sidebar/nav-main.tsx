@@ -8,13 +8,13 @@ import { CirclePlus, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { type NavGroup, type NavMainItem } from "@/navigation/sidebar/sidebar-items";
+import type { NavGroup, NavMainItem } from "@/navigation/sidebar/sidebar-items";
 
 interface NavMainProps {
   items: NavGroup[];
@@ -38,7 +38,7 @@ export function NavMain({ items }: NavMainProps) {
             <SidebarMenuItem className="flex items-center gap-2">
               <SidebarMenuButton
                 tooltip="Quick Create"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+                className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
               >
                 <CirclePlus />
                 <span>Quick Create</span>

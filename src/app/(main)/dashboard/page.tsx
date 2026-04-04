@@ -1,6 +1,6 @@
-import { ChartAreaInteractive } from "@/app/(main)/dashboard/_components/sidebar/chart-area-interactive";
 import data from "@/app/(main)/dashboard/_components/proposal-sections-table/data";
 import { ProposalSectionsTable } from "@/app/(main)/dashboard/_components/proposal-sections-table/table";
+import { ChartAreaInteractive } from "@/app/(main)/dashboard/_components/sidebar/chart-area-interactive";
 import { SectionCards } from "@/app/(main)/dashboard/_components/sidebar/section-cards";
 
 export default function Page() {
