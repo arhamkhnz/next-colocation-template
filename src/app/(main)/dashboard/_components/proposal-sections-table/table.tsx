@@ -75,8 +75,6 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(() => data.map(({ id }) => id), [data]);
 
-  // TanStack Table returns an imperative instance that this rule flags by design.
-  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns: proposalSectionsColumns,
