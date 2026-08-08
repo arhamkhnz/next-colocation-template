@@ -1,5 +1,4 @@
 "use client";
-"use no memo";
 
 import * as React from "react";
 
@@ -10,7 +9,6 @@ import {
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  type UniqueIdentifier,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -18,16 +16,11 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import {
   type ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
+  type ColumnVisibilityState,
+  type PaginationState,
+  type RowSelectionState,
   type SortingState,
-  useReactTable,
-  type VisibilityState,
+  useTable,
 } from "@tanstack/react-table";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Columns2, Plus } from "lucide-react";
 
@@ -48,6 +41,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { DraggableProposalSectionsRow, proposalSectionsColumns } from "./columns";
+import { proposalSectionsTableFeatures } from "./data-table-features";
 import type { ProposalSectionsRow } from "./schema";
 
 const VIEW_OPTIONS = [
@@ -62,20 +56,19 @@ type ViewOption = (typeof VIEW_OPTIONS)[number]["value"];
 export function ProposalSectionsTable({ data: initialData }: { data: ProposalSectionsRow[] }) {
   const [data, setData] = React.useState(() => initialData);
   const [activeView, setActiveView] = React.useState<ViewOption>("outline");
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const [columnVisibility, setColumnVisibility] = React.useState<ColumnVisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [pagination, setPagination] = React.useState({
+  const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const sortableId = React.useId();
   const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}));
 
-  const dataIds = React.useMemo<UniqueIdentifier[]>(() => data.map(({ id }) => id), [data]);
-
-  const table = useReactTable({
+  const table = useTable({
+    features: proposalSectionsTableFeatures,
     data,
     columns: proposalSectionsColumns,
     state: {
@@ -92,21 +85,23 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  const rows = table.getRowModel().rows;
+  const sortableRowIds = rows.map((row) => row.original.id);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    if (active && over && active.id !== over.id) {
+    if (over && active.id !== over.id) {
       setData((currentData) => {
-        const oldIndex = dataIds.indexOf(active.id);
-        const newIndex = dataIds.indexOf(over.id);
+        const oldIndex = currentData.findIndex((row) => row.id === active.id);
+        const newIndex = currentData.findIndex((row) => row.id === over.id);
+
+        if (oldIndex === -1 || newIndex === -1) {
+          return currentData;
+        }
+
         return arrayMove(currentData, oldIndex, newIndex);
       });
     }
@@ -197,16 +192,16 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <TableHead key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                       </TableHead>
                     ))}
                   </TableRow>
                 ))}
               </TableHeader>
               <TableBody className="**:data-[slot=table-cell]:first:w-8">
-                {table.getRowModel().rows.length ? (
-                  <SortableContext items={dataIds} strategy={verticalListSortingStrategy}>
-                    {table.getRowModel().rows.map((row) => (
+                {rows.length ? (
+                  <SortableContext items={sortableRowIds} strategy={verticalListSortingStrategy}>
+                    {rows.map((row) => (
                       <DraggableProposalSectionsRow key={row.id} row={row} />
                     ))}
                   </SortableContext>
@@ -232,13 +227,13 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 Rows per page
               </Label>
               <Select
-                value={`${table.getState().pagination.pageSize}`}
+                value={`${table.state.pagination.pageSize}`}
                 onValueChange={(value) => {
                   table.setPageSize(Number(value));
                 }}
               >
                 <SelectTrigger size="sm" className="w-20" id="proposal-sections-rows-per-page">
-                  <SelectValue placeholder={table.getState().pagination.pageSize} />
+                  <SelectValue placeholder={table.state.pagination.pageSize} />
                 </SelectTrigger>
                 <SelectContent side="top">
                   <SelectGroup>
@@ -252,7 +247,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center font-medium text-sm">
-              Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+              Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <Button

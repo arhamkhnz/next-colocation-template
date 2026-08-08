@@ -1,11 +1,10 @@
 "use client";
-"use no memo";
 
 import type { FormEvent } from "react";
+import * as React from "react";
 
 import { useSortable } from "@dnd-kit/sortable";
-import type { ColumnDef, Row } from "@tanstack/react-table";
-import { flexRender } from "@tanstack/react-table";
+import { type ColumnDef, FlexRender, type Row } from "@tanstack/react-table";
 import { CircleCheck, EllipsisVertical, GripVertical, Loader, TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { toast } from "sonner";
@@ -38,7 +37,12 @@ import { Separator } from "@/components/ui/separator";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+import type { ProposalSectionsTableFeatures } from "./data-table-features";
 import type { ProposalSectionsRow } from "./schema";
+
+type DragHandleContextValue = Pick<ReturnType<typeof useSortable>, "attributes" | "listeners" | "setActivatorNodeRef">;
+
+const DragHandleContext = React.createContext<DragHandleContextValue | null>(null);
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -60,18 +64,24 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({ id });
+function DragHandle() {
+  const dragHandle = React.useContext(DragHandleContext);
+
+  if (!dragHandle) {
+    return null;
+  }
 
   return (
     <Button
-      {...attributes}
-      {...listeners}
+      {...dragHandle.attributes}
+      {...dragHandle.listeners}
+      ref={dragHandle.setActivatorNodeRef}
+      type="button"
       variant="ghost"
       size="icon"
-      className="size-7 text-muted-foreground hover:bg-transparent"
+      className="size-7 touch-manipulation text-muted-foreground hover:bg-transparent"
     >
-      <GripVertical />
+      <GripVertical data-icon="inline-start" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
   );
@@ -236,11 +246,11 @@ function createInlineSaveHandler(header: string) {
   };
 }
 
-export const proposalSectionsColumns: ColumnDef<ProposalSectionsRow>[] = [
+export const proposalSectionsColumns: ColumnDef<ProposalSectionsTableFeatures, ProposalSectionsRow>[] = [
   {
     id: "drag",
     header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+    cell: () => <DragHandle />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -387,25 +397,36 @@ export const proposalSectionsColumns: ColumnDef<ProposalSectionsRow>[] = [
   },
 ];
 
-export function DraggableProposalSectionsRow({ row }: { row: Row<ProposalSectionsRow> }) {
-  const { transform, transition, setNodeRef, isDragging } = useSortable({
+export function DraggableProposalSectionsRow({
+  row,
+}: {
+  row: Row<ProposalSectionsTableFeatures, ProposalSectionsRow>;
+}) {
+  const { attributes, listeners, setActivatorNodeRef, transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
+    attributes: {
+      roleDescription: "sortable row",
+    },
   });
 
   return (
-    <TableRow
-      ref={setNodeRef}
-      data-state={row.getIsSelected() && "selected"}
-      data-dragging={isDragging}
-      className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
-      style={{
-        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-        transition,
-      }}
-    >
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-      ))}
-    </TableRow>
+    <DragHandleContext.Provider value={{ attributes, listeners, setActivatorNodeRef }}>
+      <TableRow
+        ref={setNodeRef}
+        data-state={row.getIsSelected() && "selected"}
+        data-dragging={isDragging}
+        className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
+        style={{
+          transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+          transition,
+        }}
+      >
+        {row.getVisibleCells().map((cell) => (
+          <TableCell key={cell.id}>
+            <FlexRender cell={cell} />
+          </TableCell>
+        ))}
+      </TableRow>
+    </DragHandleContext.Provider>
   );
 }
