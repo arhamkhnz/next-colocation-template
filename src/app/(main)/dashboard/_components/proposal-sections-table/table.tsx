@@ -2,18 +2,9 @@
 
 import * as React from "react";
 
-import {
-  closestCenter,
-  DndContext,
-  type DragEndEvent,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { arrayMove } from "@dnd-kit/helpers";
+import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
+import { isSortable } from "@dnd-kit/react/sortable";
 import {
   type ColumnFiltersState,
   type ColumnVisibilityState,
@@ -64,9 +55,6 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
     pageIndex: 0,
     pageSize: 10,
   });
-  const sortableId = React.useId();
-  const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}));
-
   const table = useTable({
     features: proposalSectionsTableFeatures,
     data,
@@ -91,20 +79,28 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
   const sortableRowIds = rows.map((row) => row.original.id);
 
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
+    const { source } = event.operation;
 
-    if (over && active.id !== over.id) {
-      setData((currentData) => {
-        const oldIndex = currentData.findIndex((row) => row.id === active.id);
-        const newIndex = currentData.findIndex((row) => row.id === over.id);
-
-        if (oldIndex === -1 || newIndex === -1) {
-          return currentData;
-        }
-
-        return arrayMove(currentData, oldIndex, newIndex);
-      });
+    if (event.canceled || !isSortable(source) || source.initialIndex === source.index) {
+      return;
     }
+
+    const destinationId = sortableRowIds[source.index];
+
+    if (destinationId === undefined) {
+      return;
+    }
+
+    setData((currentData) => {
+      const oldIndex = currentData.findIndex((row) => row.id === source.id);
+      const newIndex = currentData.findIndex((row) => row.id === destinationId);
+
+      if (oldIndex === -1 || newIndex === -1) {
+        return currentData;
+      }
+
+      return arrayMove(currentData, oldIndex, newIndex);
+    });
   }
 
   return (
@@ -179,13 +175,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
       </div>
       <TabsContent value="outline" className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
         <div className="overflow-hidden rounded-lg border">
-          <DndContext
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragEnd={handleDragEnd}
-            sensors={sensors}
-            id={sortableId}
-          >
+          <DragDropProvider onDragEnd={handleDragEnd}>
             <Table>
               <TableHeader className="sticky top-0 z-10 bg-muted">
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -200,11 +190,14 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
               </TableHeader>
               <TableBody className="**:data-[slot=table-cell]:first:w-8">
                 {rows.length ? (
-                  <SortableContext items={sortableRowIds} strategy={verticalListSortingStrategy}>
-                    {rows.map((row) => (
-                      <DraggableProposalSectionsRow key={row.id} row={row} />
-                    ))}
-                  </SortableContext>
+                  rows.map((row, index) => (
+                    <DraggableProposalSectionsRow
+                      key={row.id}
+                      row={row}
+                      index={index}
+                      isSelected={Boolean(table.state.rowSelection[row.id])}
+                    />
+                  ))
                 ) : (
                   <TableRow>
                     <TableCell colSpan={table.getVisibleLeafColumns().length} className="h-24 text-center">
@@ -214,7 +207,7 @@ export function ProposalSectionsTable({ data: initialData }: { data: ProposalSec
                 )}
               </TableBody>
             </Table>
-          </DndContext>
+          </DragDropProvider>
         </div>
         <div className="flex items-center justify-between px-4">
           <div className="hidden flex-1 text-muted-foreground text-sm lg:flex">

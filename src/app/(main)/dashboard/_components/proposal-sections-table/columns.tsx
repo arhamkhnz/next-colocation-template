@@ -1,9 +1,9 @@
 "use client";
 
-import type { FormEvent } from "react";
-import * as React from "react";
+import { createContext, type FormEvent, useContext } from "react";
 
-import { useSortable } from "@dnd-kit/sortable";
+import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers";
+import { useSortable } from "@dnd-kit/react/sortable";
 import { type ColumnDef, FlexRender, type Row } from "@tanstack/react-table";
 import { CircleCheck, EllipsisVertical, GripVertical, Loader, TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
@@ -40,9 +40,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import type { ProposalSectionsTableFeatures } from "./data-table-features";
 import type { ProposalSectionsRow } from "./schema";
 
-type DragHandleContextValue = Pick<ReturnType<typeof useSortable>, "attributes" | "listeners" | "setActivatorNodeRef">;
+type DragHandleContextValue = Pick<ReturnType<typeof useSortable>, "handleRef">;
 
-const DragHandleContext = React.createContext<DragHandleContextValue | null>(null);
+const DragHandleContext = createContext<DragHandleContextValue | null>(null);
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -65,7 +65,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function DragHandle() {
-  const dragHandle = React.useContext(DragHandleContext);
+  const dragHandle = useContext(DragHandleContext);
 
   if (!dragHandle) {
     return null;
@@ -73,9 +73,7 @@ function DragHandle() {
 
   return (
     <Button
-      {...dragHandle.attributes}
-      {...dragHandle.listeners}
-      ref={dragHandle.setActivatorNodeRef}
+      ref={dragHandle.handleRef}
       type="button"
       variant="ghost"
       size="icon"
@@ -399,27 +397,29 @@ export const proposalSectionsColumns: ColumnDef<ProposalSectionsTableFeatures, P
 
 export function DraggableProposalSectionsRow({
   row,
+  index,
+  isSelected,
 }: {
   row: Row<ProposalSectionsTableFeatures, ProposalSectionsRow>;
+  index: number;
+  isSelected: boolean;
 }) {
-  const { attributes, listeners, setActivatorNodeRef, transform, transition, setNodeRef, isDragging } = useSortable({
+  const { handleRef, isDragging, ref } = useSortable({
     id: row.original.id,
-    attributes: {
-      roleDescription: "sortable row",
-    },
+    index,
+    type: "proposal-section",
+    accept: "proposal-section",
+    group: "proposal-sections",
+    modifiers: [RestrictToVerticalAxis],
   });
 
   return (
-    <DragHandleContext.Provider value={{ attributes, listeners, setActivatorNodeRef }}>
+    <DragHandleContext.Provider value={{ handleRef }}>
       <TableRow
-        ref={setNodeRef}
-        data-state={row.getIsSelected() && "selected"}
+        ref={ref}
+        data-state={isSelected && "selected"}
         data-dragging={isDragging}
         className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
-        style={{
-          transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-          transition,
-        }}
       >
         {row.getVisibleCells().map((cell) => (
           <TableCell key={cell.id}>
